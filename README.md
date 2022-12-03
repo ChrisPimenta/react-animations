@@ -1,2 +1,1 @@
-# react-animations
-A project to practice animations
+A project to refresh knowledge in class based react and to practice animations

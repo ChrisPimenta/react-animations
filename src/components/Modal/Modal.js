@@ -1,15 +1,42 @@
 import React from 'react';
-
+import { Transition } from "react-transition-group";
 import './Modal.css';
 
 const modal = (props) => {
-    const cssClasses = `modal modal--${props.show ? 'opened' : 'closed'}`;
+    const getModalVisibilityClass = (transitionState) => {
+        let modalVisibilityClass = null;
+
+        switch (transitionState) {
+            case 'exiting':
+                modalVisibilityClass = 'modal--closed'
+                break;
+            case 'entering':
+                modalVisibilityClass = 'modal--opened'
+                break;
+        }
+
+        return modalVisibilityClass;
+    }
 
     return (
-        <div className={cssClasses}>
-            <h1>A Modal</h1>
-            <button className="Button" onClick={props.closed}>Dismiss</button>
-        </div>
+        <Transition
+            in={props.show}
+            timeout={300}
+            mountOnEnter
+            unmountOnExit
+        >
+            {
+                transitionState => {
+                    return (
+                        <div className={`modal ${getModalVisibilityClass(transitionState)}`}>
+                            <h1>A Modal</h1>
+                            <button className="Button" onClick={props.closed}>Dismiss</button>
+                        </div>
+                    )
+                }
+            }
+        </Transition>
+
     );
 }
 
